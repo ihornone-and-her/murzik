@@ -4,7 +4,7 @@ import "./globals.css";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   variable: "--font-bricolage-grotesque",
-  subsets: ["latin", "cyrillic"],
+  subsets: ["latin"],
 });
 
 const inter = Inter({
