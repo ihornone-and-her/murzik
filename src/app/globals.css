@@ -1,26 +1,99 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-primary: #ffffff;
+  --text-primary: #111827;
+  --border-primary: #d8e0ea;
+  --card-bg: #ffffff;
+  --color-midnight-ink: #111827;
+  --color-graphite: #3f4654;
+  --color-slate: #6b7589;
+  --color-mist: #d8e0ea;
+  --color-fog: #f1f5f9;
+  --orb-opacity: 0.15;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* System preference matches dark mode unless light class is present */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  html:not(.light) {
+    --bg-primary: #000000;
+    --text-primary: #f3f4f6;
+    --border-primary: #1f1f1f;
+    --card-bg: #0c0c0c;
+    --color-midnight-ink: #f3f4f6;
+    --color-graphite: #e5e7eb;
+    --color-slate: #9ca3af;
+    --color-mist: #1f1f1f;
+    --color-fog: #141414;
+    --orb-opacity: 0.35;
   }
 }
 
+/* Explicit class-based overrides */
+html.dark {
+  --bg-primary: #000000;
+  --text-primary: #f3f4f6;
+  --border-primary: #1f1f1f;
+  --card-bg: #0c0c0c;
+  --color-midnight-ink: #f3f4f6;
+  --color-graphite: #e5e7eb;
+  --color-slate: #9ca3af;
+  --color-mist: #1f1f1f;
+  --color-fog: #141414;
+  --orb-opacity: 0.35;
+}
+
+html.light {
+  --bg-primary: #ffffff;
+  --text-primary: #111827;
+  --border-primary: #d8e0ea;
+  --card-bg: #ffffff;
+  --color-midnight-ink: #111827;
+  --color-graphite: #3f4654;
+  --color-slate: #6b7589;
+  --color-mist: #d8e0ea;
+  --color-fog: #f1f5f9;
+  --orb-opacity: 0.15;
+}
+
+@theme {
+  --color-bg-primary: var(--bg-primary);
+  --color-text-primary: var(--text-primary);
+  --color-border-primary: var(--border-primary);
+  --color-card-bg: var(--card-bg);
+
+  --color-voltage-violet: #862fe7;
+  --color-ultra-violet: #5f259e;
+  --color-lavender-mist: #ad6df4;
+  --color-orchid-wash: #bd8ff0;
+  --color-magenta-spark: #ff5fe4;
+  --color-hot-pink-ray: #e22ba4;
+  --color-amber-pulse: #dc5f05;
+  --color-midnight-ink: var(--color-midnight-ink);
+  --color-graphite: var(--color-graphite);
+  --color-slate: var(--color-slate);
+  --color-pure-white: var(--card-bg);
+  --color-fog: var(--color-fog);
+  --color-mist: var(--color-mist);
+  --color-mint-wash: #d6fcf4;
+  --color-lavender-field: #ebdafd;
+
+  --font-bricolage: var(--font-bricolage-grotesque), ui-sans-serif, system-ui;
+  --font-inter: var(--font-inter), ui-sans-serif, system-ui;
+
+  --radius-nav: 8px;
+  --radius-cards: 24px;
+  --radius-pills: 9999px;
+  --radius-images: 16px;
+  --radius-buttons: 12px;
+  --radius-featured-card: 40px;
+
+  --shadow-subtle: rgba(11, 61, 121, 0.16) 0px 0px 0px 1px inset;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.25s, color 0.25s;
 }
