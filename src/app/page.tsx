@@ -2,13 +2,32 @@
 
 import { useEffect, useState } from "react";
 
+const CORRECT_PASSWORD = "17082025";
+
 export default function Home() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [authenticated, setAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark");
     setTheme(isDark ? "dark" : "light");
+
+    const saved = sessionStorage.getItem("auth_murzik");
+    if (saved === "ok") setAuthenticated(true);
   }, []);
+
+  const handlePassword = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === CORRECT_PASSWORD) {
+      sessionStorage.setItem("auth_murzik", "ok");
+      setAuthenticated(true);
+    } else {
+      setError(true);
+      setPasswordInput("");
+    }
+  };
 
   const toggleTheme = () => {
     if (theme === "dark") {
@@ -24,6 +43,45 @@ export default function Home() {
     }
   };
 
+  if (!authenticated) {
+    return (
+      <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-bg-primary text-text-primary px-4">
+        <div className="absolute top-[10%] left-[-10%] -z-10 h-[500px] w-[500px] rounded-full bg-radial from-voltage-violet/15 via-magenta-spark/5 to-transparent opacity-20 blur-[80px]" />
+        <div className="absolute bottom-[10%] right-[-15%] -z-10 h-[500px] w-[500px] rounded-full bg-radial from-amber-pulse/10 via-hot-pink-ray/5 to-transparent opacity-20 blur-[80px]" />
+
+        <div className="w-full max-w-sm">
+          <div className="text-center mb-8">
+            <span className="text-3xl inline-block mb-3">🔒</span>
+            <h1 className="font-bricolage text-2xl font-bold tracking-tight text-midnight-ink">
+              Введи пароль
+            </h1>
+          </div>
+
+          <form onSubmit={handlePassword} className="flex flex-col gap-4">
+            <input
+              type="password"
+              value={passwordInput}
+              onChange={(e) => { setPasswordInput(e.target.value); setError(false); }}
+              placeholder="Пароль"
+              autoFocus
+              className="w-full rounded-buttons border border-mist bg-card-bg px-4 py-3.5 font-inter text-body text-midnight-ink outline-none transition-colors focus:border-voltage-violet focus:ring-2 focus:ring-voltage-violet/20"
+            />
+            {error && (
+              <p className="text-sm text-red-500 font-inter text-center">Невірний пароль</p>
+            )}
+            <button
+              type="submit"
+              className="w-full rounded-buttons bg-voltage-violet py-3.5 font-inter text-sm font-semibold text-white transition-all hover:bg-ultra-violet hover:scale-[1.02]"
+              style={{ boxShadow: "var(--shadow-subtle)" }}
+            >
+              Увійти
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-bg-primary text-text-primary px-4 transition-colors duration-250 selection:bg-voltage-violet/20 selection:text-ultra-violet">
       {/* Floating Theme Toggle Button */}
@@ -33,6 +91,18 @@ export default function Home() {
         title="Переключить тему"
       >
         {theme === "dark" ? "☀️" : "🌙"}
+      </button>
+
+      {/* Logout Button */}
+      <button
+        onClick={() => {
+          sessionStorage.removeItem("auth_murzik");
+          setAuthenticated(false);
+          setPasswordInput("");
+        }}
+        className="fixed top-6 left-6 z-50 flex h-10 items-center gap-2 rounded-full border border-mist bg-card-bg px-4 text-sm font-inter text-slate shadow-sm transition-all hover:scale-105 active:scale-95"
+      >
+        🔒 Заблокувати
       </button>
 
       {/* Decorative gradient orbs */}
